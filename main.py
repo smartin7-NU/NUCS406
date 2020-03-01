@@ -3,11 +3,13 @@ import time
 
 def read_text_file_and_search_keyword(keyword):
 
+    user_tweet_dict = {}
     user_tweet_list = []
     user_mentions = []
     user_hashtags = []
     user_sentiments = []
 
+    #with open("G:/Downloads/twitter-data-timpestamped (1).txt", encoding='utf8') as datafile:
     with open("G:/Downloads/twitter-data-timpestamped.txt", encoding='utf8') as datafile:
 
         # data = csv.reader(csvfile)
@@ -22,10 +24,15 @@ def read_text_file_and_search_keyword(keyword):
             if keyword in line:
 
                 user_tweet = add_user(line)
+                # user_dict = add_user(line)
 
                 if user_tweet is not None:
 
                     user_tweet_list.append((user_tweet, counter))
+                    # dest = dict(user_tweet_dict)
+                    # dest.update(user_dict)
+                    # user_tweet_dict.update(dest)
+                    # user_tweet_dict.update(user_dict)
 
                     mention = add_user_mention(line)
                     hashtags = add_user_hashtags(line)
@@ -52,33 +59,21 @@ def read_text_file_and_search_keyword(keyword):
 
     # user_tweet_list.remove(None)
 
-    return user_tweet_list, user_mentions, user_hashtags, user_sentiments
+    # print(user_dict)
+    # print(user_tweet_list)
+
+    return user_tweet_list, user_mentions, user_hashtags
+
 
 def add_user(tweet):
 
     final_tweet_list = []
 
     tweet_list = tweet.split("|")
-    #print(tweet_list[1])
 
-    try:
+    if len(tweet_list) == 3:
 
-        final_tweet_list = [(tweet_list[1], tweet_list[2])]
-
-        # if tweet_list[2] == "":
-        #
-        #     print(tweet_list)
-        #     print(tweet)
-
-    except:
-
-        pass
-
-    if len(final_tweet_list) != 0:
-
-        #return final_tweet_list
-        #return [tweet_list[1], tweet_list[2]]
-        return tweet_list[1]
+        return tweet_list[1], tweet_list[2]
 
 
 def add_user_mention(tweet):
@@ -144,6 +139,12 @@ def add_user_hashtags(tweet):
         return user_hashtags
 
 
+def print_values(passed):
+
+    for x in passed:
+
+        print(x)
+
 # def add_user_sentiment(tweet):
 #
 #     word = [sentiment for sentiment in sentiments_list if(sentiment in tweet)]
@@ -151,3 +152,18 @@ def add_user_hashtags(tweet):
 #     user = tweet.split('|')[1]
 #
 #     return (user, word[0].strip())
+
+all_user_tweets_corona, all_user_mentions_corona, all_user_hashtags_corona = read_text_file_and_search_keyword("coronavirus")
+
+print_values(all_user_tweets_corona)
+print()
+print_values(all_user_mentions_corona)
+print()
+print_values(all_user_hashtags_corona)
+
+all_user_tweets_covid19, all_user_mentions_covid19, all_user_hashtags_covid19 = read_text_file_and_search_keyword("covid-19")
+print_values(all_user_tweets_covid19)
+print()
+print_values(all_user_mentions_covid19)
+print()
+print_values(all_user_hashtags_covid19)
